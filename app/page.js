@@ -7,6 +7,7 @@ import Footer from "./components/Footer";
 import Testimonials from "./components/Testimonials";
 import Faq from "./components/Faq";
 import Popup from "./components/Popup";
+import WhatsAppFloat from "./components/WhatsAppFloat";
 
 export default function Home() {
   return (
@@ -20,6 +21,7 @@ export default function Home() {
       <Contact />
       <Footer />
       <Popup />
+      <WhatsAppFloat />
     </div>
   );
 }

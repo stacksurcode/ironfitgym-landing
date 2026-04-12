@@ -22,7 +22,7 @@ export default function Hero() {
             {siteConfig.hero.subtitle}
 </p>
 
-          <p className="mt-6 text-lg text-gray-600">
+          <p className="whitespace-pre-line mt-6 text-lg text-gray-600">
             {siteConfig.hero.description}
           </p>
 

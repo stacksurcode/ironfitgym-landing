@@ -3,19 +3,52 @@ import { useEffect, useState } from "react";
 
 export default function Popup() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isTyping, setIsTyping] = useState(false); // 🆕
 
   useEffect(() => {
+    // DETECTAR SI ESTÁ EN SECCIÓN CONTACTO
+    const isInContactSection = () => {
+      const section = document.getElementById("contacto");
+      if (!section) return false;
+
+      const rect = section.getBoundingClientRect();
+      return rect.top < window.innerHeight && rect.bottom > 0;
+    };
+
     // CHECKEAR SI YA SE MOSTRÓ
     const alreadyShown = sessionStorage.getItem("popupShown");
 
     if (alreadyShown) return;
 
     const timer = setTimeout(() => {
+      // 🆕 BLOQUEOS INTELIGENTES
+      if (isInContactSection() || isTyping) return;
+
       setIsOpen(true);
       sessionStorage.setItem("popupShown", "true");
     }, 30000); // aparece a los 30 segundos
 
     return () => clearTimeout(timer);
+  }, [isTyping]);
+
+  // 🆕 DETECTAR SI ESTÁ ESCRIBIENDO
+  useEffect(() => {
+    const handleFocus = () => setIsTyping(true);
+    const handleBlur = () => setIsTyping(false);
+
+    const inputs = document.querySelectorAll("input, textarea");
+
+    inputs.forEach((el) => {
+      el.addEventListener("focus", handleFocus);
+      el.addEventListener("blur", handleBlur);
+    });
+
+    return () => {
+      inputs.forEach((el) => {
+        el.removeEventListener("focus", handleFocus);
+        el.removeEventListener("blur", handleBlur);
+      });
+    };
   }, []);
 
   const closePopup = () => {
@@ -74,6 +107,7 @@ export default function Popup() {
           >
             Ir al formulario
           </a>
+
           {/* SEGUIR NAVEGANDO */}
           <a
             onClick={closePopup}

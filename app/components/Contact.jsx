@@ -7,10 +7,14 @@ export default function Contact() {
     nombre: "",
     email: "",
     mensaje: "",
+    empresa: "", // 🆕 honeypot
   });
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const COOLDOWN = 60000; // 🆕 60 segundos
 
   const handleChange = (e) => {
     setForm({
@@ -25,6 +29,19 @@ export default function Contact() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // 🛡️ HONEYPOT (ANTI BOT)
+    if (form.empresa) {
+      return;
+    }
+
+    // 🛡️ COOLDOWN (ANTI SPAM USER)
+    const lastSubmit = localStorage.getItem("lastSubmit");
+
+    if (lastSubmit && Date.now() - lastSubmit < COOLDOWN) {
+      setError("Esperá unos segundos antes de enviar otro mensaje.");
+      return;
+    }
+
     // VALIDACIÓN
     if (!form.nombre || !form.email || !form.mensaje) {
       setError(siteConfig.contact.messages.error1);
@@ -32,30 +49,55 @@ export default function Contact() {
       return;
     }
 
-    if (!form.email.includes("@")) {
+    // 🆕 VALIDACIÓN NOMBRE
+    if (form.nombre.length < 2) {
+      setError("Ingresá un nombre válido.");
+      return;
+    }
+
+    // 🆕 VALIDACIÓN EMAIL PRO
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(form.email)) {
       setError(siteConfig.contact.messages.error2);
       setSuccess("");
       return;
     }
 
+    // 🆕 VALIDACIÓN MENSAJE
+    if (form.mensaje.length < 10) {
+      setError("El mensaje es demasiado corto.");
+      return;
+    }
+
     try {
-    const res = await fetch("https://formspree.io/f/mgorwkbb", {
-      method: "POST",
-      headers: {
-        "Accept": "application/json",
-      },
-      body: new FormData(e.target),
-    });
+      setLoading(true);
+
+      const res = await fetch("https://formspree.io/f/mgorwkbb", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: form.nombre,
+          email: form.email,
+          message: form.mensaje,
+        }),
+      });
 
       if (res.ok) {
         setError("");
         setSuccess(siteConfig.contact.messages.success);
+
+        // 🆕 GUARDAR TIEMPO (cooldown)
+        localStorage.setItem("lastSubmit", Date.now());
 
         // LIMPIAR FORM
         setForm({
           nombre: "",
           email: "",
           mensaje: "",
+          empresa: "",
         });
       } else {
         setError("Error al enviar. Intentá nuevamente.");
@@ -64,6 +106,8 @@ export default function Contact() {
     } catch (err) {
       setError("Error de conexión.");
       setSuccess("");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -88,10 +132,20 @@ export default function Contact() {
           className="bg-gray-50 p-8 rounded-2xl shadow-md flex flex-col gap-5"
         >
 
-          {/* 🆕 TÍTULO DEL FORMULARIO */}
-          <h3 className="text-xl font-semibold text-center mb-2 text-lg tracking-wide text-gray-700">
+          {/* TÍTULO DEL FORMULARIO */}
+          <h3 className="text-xl font-medium text-center mb-2 text-lg tracking-wide text-gray-700">
             Formulario de Contacto
           </h3>
+
+          {/* 🆕 HONEYPOT (oculto) */}
+          <input
+            type="text"
+            name="empresa"
+            value={form.empresa}
+            onChange={handleChange}
+            className="hidden"
+            autoComplete="off"
+          />
 
           {/* NOMBRE */}
           <div className="flex flex-col">
@@ -137,21 +191,37 @@ export default function Contact() {
             ></textarea>
           </div>
 
-          {/* MENSAJES */}
+          {/* ERROR */}
           {error && (
             <p className="text-red-500 text-sm">{error}</p>
           )}
 
+          {/* SUCCESS */}
           {success && (
-            <p className="text-green-500 text-sm">{success}</p>
+            <div className="flex items-center gap-2 text-green-600 text-sm font-medium">
+              ✔ {success}
+            </div>
           )}
 
           {/* BOTÓN */}
           <button
             type="submit"
-            className="bg-[var(--primary)] text-white py-3 rounded-lg hover:bg-[var(--primary-hover)] hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+            disabled={loading}
+            className={`flex items-center justify-center gap-2 py-3 rounded-lg text-white transition-all duration-300
+            ${
+              loading
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-[var(--primary)] hover:bg-[var(--primary-hover)] hover:shadow-xl hover:-translate-y-1"
+            }`}
           >
-            {siteConfig.contact.form.button}
+            {loading ? (
+              <>
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                Enviando...
+              </>
+            ) : (
+              siteConfig.contact.form.button
+            )}
           </button>
         </form>
 

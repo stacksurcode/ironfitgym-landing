@@ -46,7 +46,9 @@ const gym = {
     title: "Resultados reales en",
     highlight: "pocas semanas",
     subtitle: "Entrenamiento personalizado certificado",
-    description: "En IronFit Gym combinamos entrenamiento de alto nivel con acompañamiento personalizado para lograr resultados reales y sostenibles.",
+    description: `IronFit Gym es para TODOS.
+    Todos los que quieren y desean.
+    Entrenamientos personalizados con acompañamiento.`,
     cta: "Agendar clase",
     secondaryCta: "Ver programas",
     miniBen1: "✔ Sin compromisos",
