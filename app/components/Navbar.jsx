@@ -80,8 +80,8 @@ export default function Navbar() {
             {siteConfig.navBarItems.about}
           </a>
           <a href="#faq" onClick={() => setMenuOpen(false)}>
-  {siteConfig.navBarItems.faq}
-</a>
+            {siteConfig.navBarItems.faq}
+          </a>
           <a href="#contacto" onClick={() => setMenuOpen(false)}>
             {siteConfig.navBarItems.contact}
           </a>

@@ -3,8 +3,8 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --primary: #7c3aed; /* violet-600 */
-  --primary-hover: #6d28d9; /* violet-700 */
+  --primary: #dc2626;
+  --primaryHover: #b91c1c; 
   --font-geist-sans: "Geist Sans", sans-serif; 
 }
 
