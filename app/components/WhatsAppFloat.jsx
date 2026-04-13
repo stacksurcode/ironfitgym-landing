@@ -15,7 +15,7 @@ export default function WhatsAppFloat() {
         className="bg-green-500 hover:bg-green-600 p-3 rounded-full shadow-xl transition-all duration-300 transform hover:scale-110 flex items-center justify-center animate-pulse"
       >
         <img
-          src="/icons/WhatsApp-icon.png"
+          src="/icons/Whatsapp-icon.png"
           alt="WhatsApp"
           className="w-11 h-11 object-contain"
         />

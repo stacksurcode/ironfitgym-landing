@@ -52,7 +52,7 @@ export default function Navbar() {
           className="flex items-center gap-2 bg-green-500 text-white px-5 py-2 rounded-lg shadow-md hover:bg-green-600 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
    Enviar mensaje ahora
 <img
-  src="/icons/WhatsApp-icon.png"
+  src="/icons/Whatsapp-icon.png"
   alt="WhatsApp"
   className="w-5 h-5 object-contain ml-1"
 />
