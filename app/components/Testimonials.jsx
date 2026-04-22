@@ -4,7 +4,7 @@ import { siteConfig } from "../config/site";
 
 export default function Testimonials() {
   return (
-    <section className="py-24 md:py-32 bg-gray-50">
+    <section id="testimonials" className="py-24 md:py-32 bg-gray-50">
       <div className="w-16 h-1 bg-[var(--primary)] mx-auto mb-6 rounded-full"></div>
 
       <div className="max-w-7xl mx-auto px-6">

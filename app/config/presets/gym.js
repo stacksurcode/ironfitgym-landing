@@ -17,6 +17,7 @@ const gym = {
     inicio: "Inicio",
     services: "Servicios",
     about: "Sobre Nosotros",
+    testimonials: "Testimonios",
     faq: "Preguntas Frecuentes",
     contact: "Contáctanos",
   },
@@ -112,7 +113,7 @@ Esta vez lo hacés bien, con resultados.`,
   ],
 
   testimonials: {
-    title: "Lo que dicen nuestros alumnos",
+    title: "Testimonios",
     subtitle: "Resultados reales de quienes entrenan con nosotros",
 
     items: [
